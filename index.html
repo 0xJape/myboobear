@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Bebu 💌</title>
+    <meta name="description" content="A heartfelt love letter for someone special">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Outfit:wght@200;300;400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Background Audio (YouTube Player placeholder) -->
+    <div id="youtube-audio" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; z-index: -1;">
+        <div id="youtube-player"></div>
+    </div>
+
+    <!-- Load YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- Canvas for particle/star effects -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Floating hearts layer -->
+    <div id="floating-hearts" aria-hidden="true"></div>
+
+    <!-- Ambient light orbs -->
+    <div id="ambient-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- ========== SCENE 1: INTRO ========== -->
+    <div id="intro-container" class="scene active">
+        <div class="intro-content">
+            <div class="sparkle-ring" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span>
+            </div>
+            <div id="envelope-wrapper">
+                <div id="envelope" class="envelope-3d" role="button" tabindex="0" aria-label="Open the love letter">
+                    <div class="envelope-back">
+                        <div class="envelope-flap"></div>
+                    </div>
+                    <div class="envelope-front">
+                        <div class="heart-seal">💖</div>
+                    </div>
+                </div>
+            </div>
+            <p class="hint-text">tap the envelope…</p>
+            <div class="hint-arrow" aria-hidden="true">
+                <svg width="20" height="30" viewBox="0 0 20 30" fill="none">
+                    <path d="M10 0 L10 24 M2 18 L10 26 L18 18" stroke="rgba(255,182,193,0.5)" stroke-width="1.5"
+                        stroke-linecap="round" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SCENE 2: TRANSITION ========== -->
+    <div id="transition-scene" class="scene">
+        <div class="transition-text">
+            <span class="transition-word">A</span>
+            <span class="transition-word">letter</span>
+            <span class="transition-word">from</span>
+            <span class="transition-word">my</span>
+            <span class="transition-word">heart…</span>
+        </div>
+    </div>
+
+    <!-- ========== SCENE 3: LETTER ========== -->
+    <div id="letter-container" class="scene">
+        <div class="letter-paper">
+            <div class="paper-texture" aria-hidden="true"></div>
+            <div class="letter-header">
+                <div class="date-line">For you, my love</div>
+                <div class="decorative-line" aria-hidden="true">
+                    <span></span>
+                    <span class="deco-heart">♥</span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="letter-body" id="letter-body">
+                <p class="letter-line" data-delay="0">I've always been independent, competitive, confident, at tiyak sa
+                    mga bagay na ginagawa ko. Pero, sa dami-rami ng napagdaanan ko, dumating rin yung panahon na
+                    kinakatakutan ko; ang 'tila pagkawala ng mga ngiti ko sa mga bagay na gusto 'kong gawin. Akala ko
+                    normal lang yun, akala ko kusa lang na babalik. Pero bat parang mas naging palubog nako?</p>
+
+                <p class="letter-line" data-delay="1">I've been longing for that 'smile' to come back, but I did not
+                    expect na yung bagay na hinahanap ko sa sarili ko, sayo ko lang pala mahahanap. That 'smile' of
+                    yours, ignited the long gone passion inside of me. Naramdaman ko na may kabuluhan pa rin yung mga
+                    ginagawa ko, di dahil gusto ko, kundi dahil may isang tao na tumulak sakin na ipagpatuloy ko.</p>
+
+                <p class="letter-line" data-delay="2">Ang totoo, nahirapan akong kalabanin ang sarili ko. Pero
+                    pinaramdam mo sakin na kaya ko. Sa bawat "kaya mo yan" at sa bawat "okay lang yan" mo, naintindihan
+                    ko na okay lang naman magkamali, at mas pinagbutihan ko na ang lahat na ginagawa ko. Kung nawala
+                    yung tiwala ko sa sarili ko, salamat sa pagdala nito pabalik sakin. From then on, I've always been
+                    thriving to become better. Not just for myself, but for the chance of giving the both of us; the
+                    best life ever.</p>
+
+                <p class="letter-line" data-delay="3">Sabi nila, "Being with the right person makes the world pause, and
+                    time feels like it's unfolding just for you". Nung una, di ko maintindihan ang ibig sabihin nito,
+                    but as time passes by, I've realized na I always felt this way when I'm with you. When I look into
+                    your eyes, the world moves on without me, and yet, I wouldn't want to be anywhere else but here,
+                    lost in you. Thank you, for always loving me in the ways you could.</p>
+
+                <p class="letter-line final-line" data-delay="4">I love you so much, happy monthsary my bebu! 💖</p>
+            </div>
+            <div class="letter-signature">
+                <span class="signature-line">— Your Boobear</span>
+            </div>
+        </div>
+
+        <div class="controls" id="controls">
+            <button id="replay-btn" class="control-btn" aria-label="Replay the letter">
+                <span class="btn-icon">💌</span>
+                <span class="btn-text">Replay</span>
+            </button>
+            <button id="pause-btn" class="control-btn" aria-label="Toggle music">
+                <span class="btn-icon">🎵</span>
+                <span class="btn-text">Pause Music</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

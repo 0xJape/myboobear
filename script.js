@@ -1,49 +1,3 @@
-// === YouTube Audio Setup ===
-let ytPlayer;
-let isVideoReady = false;
-let userClickedPlay = false;
-
-window.onYouTubeIframeAPIReady = function() {
-    ytPlayer = new YT.Player('youtube-player', {
-        height: '1',
-        width: '1',
-        videoId: 't3wNvxkFFLY', // User provided YouTube Video ID
-        playerVars: {
-            'autoplay': 0,
-            'controls': 0,
-            'disablekb': 1,
-            'fs': 0,
-            'loop': 1,
-            'playlist': 't3wNvxkFFLY', // Need this so it loops properly
-            'origin': window.location.origin === 'file://' ? 'https://localhost' : window.location.origin
-        },
-        events: {
-            'onReady': onPlayerReady,
-            'onError': onPlayerError,
-            'onStateChange': onPlayerStateChange
-        }
-    });
-};
-
-function onPlayerError(event) {
-    console.error("YouTube Player Error:", event.data);
-    // 2=invalid parameter, 5=HTML5 player error, 100=video not found/removed/private, 101/150=video owner doesn't allow embed.
-}
-
-function onPlayerStateChange(event) {
-    console.log("YouTube Player State Change:", event.data);
-}
-
-function onPlayerReady(event) {
-    isVideoReady = true;
-    ytPlayer.setVolume(100); // Set volume to 100%
-
-    // If the user already clicked the envelope before the video was ready, play it now
-    if (userClickedPlay) {
-        playMusic();
-    }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     // === DOM Elements ===
     const introScene = document.getElementById("intro-container");
@@ -153,26 +107,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // === Audio Playback ===
     function playMusic() {
-        userClickedPlay = true; // Mark that user initiated playback
-        
         if (isPlaying) return;
         
-        if (isVideoReady && ytPlayer && ytPlayer.playVideo) {
-            ytPlayer.playVideo();
-            isPlaying = true;
-            if (pauseBtnText) pauseBtnText.textContent = "Pause Music";
-        }
+        const ytContainer = document.getElementById("youtube-audio");
+        ytContainer.innerHTML = `<iframe 
+            width="560" 
+            height="315" 
+            src="https://www.youtube.com/embed/C43pOpjLLfM?autoplay=1&loop=1&playlist=C43pOpjLLfM&controls=0&disablekb=1&showinfo=0" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+        </iframe>`;
+        
+        isPlaying = true;
+        if (pauseBtnText) pauseBtnText.textContent = "Pause Music";
     }
 
     function toggleControls() {
+        const ytContainer = document.getElementById("youtube-audio");
         if (isPlaying) {
-            if (isVideoReady && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+            ytContainer.innerHTML = ''; // Destroy the iframe to stop playback
             if (pauseBtnText) pauseBtnText.textContent = "Play Music";
+            isPlaying = false;
         } else {
-            if (isVideoReady && ytPlayer.playVideo) ytPlayer.playVideo();
-            if (pauseBtnText) pauseBtnText.textContent = "Pause Music";
+            playMusic();
         }
-        isPlaying = !isPlaying;
     }
 
     pauseBtn.addEventListener("click", toggleControls);
@@ -200,11 +160,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Return to intro
         setTimeout(() => {
             introScene.classList.add("active");
-            // Optional: rewind music
-            if (isVideoReady && ytPlayer && ytPlayer.seekTo) {
-                ytPlayer.seekTo(0);
-            }
             if (!isPlaying) {
+                playMusic();
+            } else {
+                // If it is playing, we can't cleanly seek to 0 with this embed approach without reloading the iframe.
+                // So we just restart it.
+                const ytContainer = document.getElementById("youtube-audio");
+                ytContainer.innerHTML = '';
+                isPlaying = false;
                 playMusic();
             }
         }, 1000);

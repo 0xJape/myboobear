@@ -15,13 +15,10 @@
 </head>
 
 <body>
-    <!-- Background Audio (YouTube Player placeholder) -->
-    <div id="youtube-audio" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; z-index: -1;">
-        <div id="youtube-player"></div>
+    <!-- Background Audio (YouTube iframe container) -->
+    <div id="youtube-audio" style="opacity: 0; position: absolute; pointer-events: none; width: 1px; height: 1px; z-index: -1;">
+        <!-- We will inject the iframe here when clicked -->
     </div>
-
-    <!-- Load YouTube IFrame API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
 
     <!-- Canvas for particle/star effects -->
     <canvas id="particles-canvas"></canvas>

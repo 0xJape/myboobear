@@ -64,11 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 transitionScene.classList.remove("active");
                 letterScene.classList.add("active");
                 
-                // Allow some time for layout, then show paper
+                // Allow some more time for layout and suspense, then show paper
                 setTimeout(() => {
                     letterPaper.classList.add("visible");
                     revealLetterContent();
-                }, 800);
+                }, 2000); // Increased delay here so the message appears slightly later after fading in
 
             }, 3500); // Wait for transition words
         }, 1800); // Wait for envelope open animation
@@ -111,15 +111,29 @@ document.addEventListener("DOMContentLoaded", () => {
         
         const ytContainer = document.getElementById("youtube-audio");
         ytContainer.innerHTML = `<iframe 
+            id="yt-iframe-player"
             width="560" 
             height="315" 
-            src="https://www.youtube.com/embed/C43pOpjLLfM?autoplay=1&loop=1&playlist=C43pOpjLLfM&controls=0&disablekb=1&showinfo=0" 
+            src="https://www.youtube.com/embed/C43pOpjLLfM?enablejsapi=1&autoplay=1&loop=1&playlist=C43pOpjLLfM&controls=0&disablekb=1&showinfo=0" 
             title="YouTube video player" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             allowfullscreen>
         </iframe>`;
         
+        // Lower the volume to 60%
+        setTimeout(() => {
+            if (window.YT && window.YT.Player) {
+                new YT.Player('yt-iframe-player', {
+                    events: {
+                        'onReady': (event) => {
+                            event.target.setVolume(60);
+                        }
+                    }
+                });
+            }
+        }, 1000); // give the iframe 1 second to load before hooking volume
+
         isPlaying = true;
         if (pauseBtnText) pauseBtnText.textContent = "Pause Music";
     }
